@@ -1,1 +1,3 @@
-# RNO 코인 채굴정보 수집목적으로 커스텀된 Miner
+# CustomApiMiner
+
+RNO 마이닝 infomation을 수집을 위한 커스텀 RNO Miner

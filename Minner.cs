@@ -64,7 +64,7 @@ namespace coinminner
     private Label label12;
     private PictureBox pictureBox1;
     private Label label7;
-
+    
     public Minner(string miningWallet, string initData)
     {
       this.InitializeComponent();

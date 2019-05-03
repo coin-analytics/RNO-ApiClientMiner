@@ -24,3 +24,16 @@ C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.cs
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.exe
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.pdb
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\bin\Debug\rnocoinminer.exe
+C:\Users\Administrator\Desktop\Team\apiclientminer\bin\Debug\rnocoinminer.pdb
+C:\Users\Administrator\Desktop\Team\apiclientminer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\rnocoinminer.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\coinminner.CoinMinner.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\coinminner.Minner.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\coinminner.Properties.Resources.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\coinminner.transaction.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\rnocoinminer.csproj.GenerateResource.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\rnocoinminer.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\rnocoinminer.csproj.CopyComplete
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\rnocoinminer.exe
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Debug\rnocoinminer.pdb

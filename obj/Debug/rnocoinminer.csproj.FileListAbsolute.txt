@@ -14,7 +14,6 @@ C:\Users\Administrator\Desktop\Team\API\rnocoinminer\obj\Debug\rnocoinminer.pdb
 C:\Users\Administrator\Desktop\Team\API\customapiminer\bin\Debug\rnocoinminer.exe
 C:\Users\Administrator\Desktop\Team\API\customapiminer\bin\Debug\rnocoinminer.pdb
 C:\Users\Administrator\Desktop\Team\API\customapiminer\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.csprojAssemblyReference.cache
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\coinminner.CoinMinner.resources
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\coinminner.Minner.resources
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\coinminner.Properties.Resources.resources
@@ -24,3 +23,4 @@ C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.cs
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.csproj.CopyComplete
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.exe
 C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.pdb
+C:\Users\Administrator\Desktop\Team\API\customapiminer\obj\Debug\rnocoinminer.csprojAssemblyReference.cache

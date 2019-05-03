@@ -25,13 +25,16 @@ namespace coinminner
     private Point mousePoint;
     private HttpWebRequest wReq;
     private HttpWebRequest wRes;
+    private HttpWebRequest wSta;
     private Stream PostDataStream;
     private Stream PostDataStream1;
     private Stream respPostStream;
     private Stream resPostStr;
     private StreamReader readerPost;
     private StreamReader ReadPost;
+    private StreamReader ReadGet;
     private HttpWebResponse wResp;
+    private HttpWebResponse wStap;
     private HttpWebResponse wReqs;
     private IContainer components;
     private PictureBox pictureBox1;
@@ -49,49 +52,93 @@ namespace coinminner
     private Label label7;
 
     public CoinMinner()
-    {
-      this.InitializeComponent();
-      ServicePointManager.ServerCertificateValidationCallback += (RemoteCertificateValidationCallback) ((sender, certificate, chain, sslPolicyErrors) => true);
-    }
+     {
+            this.InitializeComponent();
+            ServicePointManager.ServerCertificateValidationCallback += (RemoteCertificateValidationCallback)((sender, certificate, chain, sslPolicyErrors) => true);
+            StringBuilder ping = new StringBuilder();
+     }
+     private void APIStat(object sender)
+     {
+        this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report/"));
+        this.wSta.Method = "GET";
+        // this.wSta.ContentType = "application/x-www-form-urlencoded";
+        try
+        {
+            this.wStap = (HttpWebResponse)this.wSta.GetResponse();
+            JObject GetStatueAPI = JObject.Parse(this.ReadGet.ReadToEnd());
+            if (!(GetStatueAPI["status"].ToString() == "1") || !(GetStatueAPI["message"].ToString() != "NONE"))
+                return;
+            int num = (int)MessageBox.Show("로그 수집이 일시 중단되었습니다.");
+            // Application.Exit();
 
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("API서버 접속에 실패하였습니다");
+
+        }
+     }
+    private void VerCheck(object sender)
+    {
+        StringBuilder vercheck = new StringBuilder();
+        vercheck.Append("version" + "1.2-c4-2019042701");
+        byte[] byte1 = Encoding.UTF8.GetBytes(vercheck.ToString());
+        this.wRes = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/check"));
+        this.wRes.Method = "POST";
+        this.wRes.ContentType = "application/x-www-form-urlencoded";
+        this.wRes.ContentLength = (long)byte1.Length;
+        this.PostDataStream1 = this.wRes.GetRequestStream();
+        this.PostDataStream1.Write(byte1, 0, byte1.Length);
+        this.PostDataStream1.Close();
+        this.wResp = (HttpWebResponse)this.wReq.GetResponse();
+        this.resPostStr = this.wReqs.GetResponseStream();
+        this.ReadPost = new StreamReader(this.resPostStr, Encoding.Default);
+        JObject jobject = JObject.Parse(this.ReadPost.ReadToEnd());
+        if (!(jobject["status"].ToString() == "Y") || !(jobject["message"].ToString() != "1.2-c4-2019042701"))
+            return;
+        int num = (int) MessageBox.Show("프로그램이 업데이트 되었습니다. 새로운 버젼을 다운로드 해주세요.");
+        Application.Exit();
+    }
     private void Form1_Load(object sender, EventArgs e)
     {
-      this.label7.Parent = (Control) this.pictureBox1;
-      StringBuilder stringBuilder = new StringBuilder();
-      string text = this.WalletTextBox.Text;
-      stringBuilder.Append("miningWallet=" + text); // stringBuilder에 마이닝주소 값을 추가한다
-      byte[] bytes = Encoding.UTF8.GetBytes(stringBuilder.ToString());
-      byte[] byte1 = Encoding.UTF8.GetBytes(stringBuilder.ToString());
-      this.wReq = (HttpWebRequest) WebRequest.Create(new Uri(this.domain + "/api/versionCheck")); // webRequest를 생성 [http://(domain)/api/versionCheck]
-      this.wRes = (HttpWebRequest) WebRequest.Create(new Uri(this.api + "/api/check"));
-      this.wReq.Method = "POST"; // webRequest HTTP 전송 프로토콜을 POST로 지정
-      this.wRes.Method = "POST";
-      this.wReq.ContentType = "application/x-www-form-urlencoded";
-      this.wRes.ContentType = "application/json";
-      this.wReq.ContentLength = (long) bytes.Length;
-      this.wRes.ContentLength = (long)byte1.Length;
-      this.PostDataStream = this.wReq.GetRequestStream();
-      this.PostDataStream1 = this.wRes.GetRequestStream();
-      this.PostDataStream.Write(bytes, 0, bytes.Length);
-      this.PostDataStream1.Write(byte1, 0, byte1.Length);
+        this.label7.Parent = (Control) this.pictureBox1;
+        StringBuilder stringBuilder = new StringBuilder();
+        //StringBuilder vercheck = new StringBuilder();
+        //vercheck.Append("version" + "1.2-c4-2019042701"); 
+        string text = this.WalletTextBox.Text;
+        stringBuilder.Append("miningWallet=" + text); // stringBuilder에 마이닝주소 값을 추가한다
+        byte[] bytes = Encoding.UTF8.GetBytes(stringBuilder.ToString());
+        //byte[] byte1 = Encoding.UTF8.GetBytes(vercheck.ToString());
+        this.wReq = (HttpWebRequest) WebRequest.Create(new Uri(this.domain + "/api/versionCheck")); // webRequest를 생성 [http://(domain)/api/versionCheck]
+        //this.wRes = (HttpWebRequest) WebRequest.Create(new Uri(this.api + "/api/check"));
+        this.wReq.Method = "POST"; // webRequest HTTP 전송 프로토콜을 POST로 지정
+        //this.wRes.Method = "POST";
+        this.wReq.ContentType = "application/x-www-form-urlencoded";
+        //this.wRes.ContentType = "application/x-www-form-urlencoded";
+        this.wReq.ContentLength = (long) bytes.Length;
+        //this.wRes.ContentLength = (long) byte1.Length;
+        this.PostDataStream = this.wReq.GetRequestStream();
+        //this.PostDataStream1 = this.wRes.GetRequestStream();
+        this.PostDataStream.Write(bytes, 0, bytes.Length);
+        //this.PostDataStream1.Write(byte1, 0, byte1.Length);
       
-      this.PostDataStream.Close();
-      this.wResp = (HttpWebResponse) this.wReq.GetResponse();
-      this.wReqs = (HttpWebResponse) this.wRes.GetResponse();
-      this.respPostStream = this.wResp.GetResponseStream();
-      this.resPostStr = this.wReqs.GetResponseStream();
-      this.readerPost = new StreamReader(this.respPostStream, Encoding.Default);
-      this.ReadPost = new StreamReader(this.resPostStr, Encoding.Default);
-      JObject jobject = JObject.Parse(this.ReadPost.ReadToEnd());
-      if (!(jobject["result"].ToString() == "True") || !(jobject["msg"][(object) "programVersion"].ToString() != "1.2"))
-        return;
-      int num = (int) MessageBox.Show("프로그램이 업데이트 되었습니다. 새로운 버젼을 다운로드 해주세요.");
-      Application.Exit();
+        this.PostDataStream.Close();
+        this.wResp = (HttpWebResponse) this.wReq.GetResponse();
+        //this.wReqs = (HttpWebResponse) this.wRes.GetResponse();
+        this.respPostStream = this.wResp.GetResponseStream();
+        //this.resPostStr = this.wReqs.GetResponseStream();
+        this.readerPost = new StreamReader(this.respPostStream, Encoding.Default);
+        //this.ReadPost = new StreamReader(this.resPostStr, Encoding.Default);
+        //JObject jobject = JObject.Parse(this.ReadPost.ReadToEnd());
+        //if (!(jobject["status"].ToString() == "Y") || !(jobject["message"].ToString() != "1.2-c4-2019042701"))
+        //return;
+        //int num = (int) MessageBox.Show("프로그램이 업데이트 되었습니다. 새로운 버젼을 다운로드 해주세요.");
+        //Application.Exit();
     }
 
     private void Form1_MouseDown(object sender, MouseEventArgs e)
     {
-      this.mousePoint = new Point(e.X, e.Y);
+        this.mousePoint = new Point(e.X, e.Y);
     }
 
     private void Form1_MouseMove(object sender, MouseEventArgs e)

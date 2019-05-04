@@ -1,0 +1,13 @@
+C:\Users\Administrator\Desktop\Team\apiclientminer\bin\Release\rnocoinminer.exe
+C:\Users\Administrator\Desktop\Team\apiclientminer\bin\Release\rnocoinminer.pdb
+C:\Users\Administrator\Desktop\Team\apiclientminer\bin\Release\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\rnocoinminer.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\coinminner.CoinMinner.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\coinminner.Minner.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\coinminner.Properties.Resources.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\coinminner.transaction.resources
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\rnocoinminer.csproj.GenerateResource.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\rnocoinminer.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\rnocoinminer.csproj.CopyComplete
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\rnocoinminer.exe
+C:\Users\Administrator\Desktop\Team\apiclientminer\obj\Release\rnocoinminer.pdb

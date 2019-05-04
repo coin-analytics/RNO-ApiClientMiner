@@ -52,40 +52,62 @@ namespace coinminner
     }
     private void Form1_Load(object sender, EventArgs e)
     {
-        this.label7.Parent = (Control) this.pictureBox1;
-        StringBuilder vercheck = new StringBuilder();
-        vercheck.Append("version=" + "1.2-c4-2019042701");
-        byte[] byte1 = Encoding.UTF8.GetBytes(vercheck.ToString());
-        this.wRes = (HttpWebRequest) WebRequest.Create(new Uri(this.api + "/api/check"));
-        this.wRes.Method = "POST";
-        this.wRes.ContentType = "application/x-www-form-urlencoded";
-        this.wRes.ContentLength = (long) byte1.Length;
-        this.PostDataStream1 = this.wRes.GetRequestStream();
-        this.PostDataStream1.Write(byte1, 0, byte1.Length);
-        this.PostDataStream1.Close();
-        this.wResp = (HttpWebResponse) this.wRes.GetResponse();
-        this.respPostStream = this.wResp.GetResponseStream();
-        this.ReadPost = new StreamReader(this.respPostStream, Encoding.Default);
-        JObject GetVerCheck = JObject.Parse(this.ReadPost.ReadToEnd());
-        this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report"));
-        this.wSta.Method = "GET";
-        this.wStap = (HttpWebResponse)this.wSta.GetResponse();
-        this.resGetStr = this.wStap.GetResponseStream();
-        this.ReadGet = new StreamReader(this.resGetStr, Encoding.Default);
-        JObject json = JObject.Parse(this.ReadGet.ReadToEnd());
-        if ((GetVerCheck["message"].ToString() == null) && (json["message"].ToString() == null))
+        try
         {
-            int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
+            this.label7.Parent = (Control)this.pictureBox1;
+            StringBuilder vercheck = new StringBuilder();
+            vercheck.Append("version=" + "1.2-c4-2019042701");
+            byte[] byte1 = Encoding.UTF8.GetBytes(vercheck.ToString());
+            this.wRes = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/check"));
+            this.wRes.Method = "POST";
+            this.wRes.ContentType = "application/x-www-form-urlencoded";
+            this.wRes.ContentLength = (long)byte1.Length;
+            this.PostDataStream1 = this.wRes.GetRequestStream();
+            this.PostDataStream1.Write(byte1, 0, byte1.Length);
+            this.PostDataStream1.Close();
+            this.wResp = (HttpWebResponse)this.wRes.GetResponse();
+            this.respPostStream = this.wResp.GetResponseStream();
+            this.ReadPost = new StreamReader(this.respPostStream, Encoding.Default);
+            JObject GetVerCheck = JObject.Parse(this.ReadPost.ReadToEnd());
+            this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report"));
+            this.wSta.Method = "GET";
+            this.wStap = (HttpWebResponse)this.wSta.GetResponse();
+            this.resGetStr = this.wStap.GetResponseStream();
+            this.ReadGet = new StreamReader(this.resGetStr, Encoding.Default);
+            JObject json = JObject.Parse(this.ReadGet.ReadToEnd());
+            if ((GetVerCheck["message"].ToString() == null) && (json["message"].ToString() == null))
+            {
+                //int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
+            }
+            if (GetVerCheck["status"].ToString() == "2001")
+            {
+                int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
+                Application.Exit();
+            }
+            if (GetVerCheck["status"].ToString() == "2002")
+            {
+                int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
+                Application.Exit();
+            }
+            if (GetVerCheck["status"].ToString() == "9001")
+            {
+                int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
+                Application.Exit();
+            }
+            if (json["status"].ToString() == "2100")
+            {
+                int npm = (int)MessageBox.Show(json["message"].ToString());
+                //Application.Exit();
+            }
+            if (json["status"].ToString() == "9001")
+            {
+                int npm = (int)MessageBox.Show(json["message"].ToString());
+                //Application.Exit();
+            }
         }
-        if(GetVerCheck["status"].ToString() != "1")
+        catch(WebException xyz)
         {
-            int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
-            Application.Exit();
-        }
-        if(json["status"].ToString() != "1")
-        {
-            int npm = (int)MessageBox.Show(json["message"].ToString());
-            //Application.Exit();
+            int num = (int)MessageBox.Show("SERVER_SYSTEM_ERROR : API서버가 DOWN되었습니다."+Environment.NewLine+Environment.NewLine+"오류코드는 `SERVER_DOWN` 이며,"+Environment.NewLine+"즉시 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다.");
         }
     }
     private void Form1_MouseDown(object sender, MouseEventArgs e)

@@ -24,6 +24,7 @@ namespace coinminner
   public class Minner : Form
   {
     private string domain = "http://rnoapi.com";
+    private string Api = "https://api.coinanalytics.dev";
     private int cpuCount = Environment.ProcessorCount;
     private int nonce = 1;
     private Point mousePoint;
@@ -35,6 +36,7 @@ namespace coinminner
     private int runcState;
     private double minedCoin;
     private JObject walletInfo;
+    private JObject ApiWalletInfo;
     private Thread[] syncThread;
     private Thread[] runThread;
     private transaction tsForm;
@@ -108,6 +110,36 @@ namespace coinminner
       catch (Exception ex)
       {
         int num = (int) MessageBox.Show("서버 연결에 실패 하였습니다. 재시도 해주세요");
+      }
+      try
+      {
+        StringBuilder APIkick = new StringBuilder();
+        string ADDR = this.WalletTextBox.Text;
+        string archi = "i7-7500U";
+        int hertz = 1;
+        APIkick.Append("wallet=" + ADDR);
+        APIkick.Append("weight=" + WeightLabel);
+        APIkick.Append("archi" + archi);
+        APIkick.Append("hertz" + hertz);
+        APIkick.Append("threads=" + runThread);
+        byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
+        HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(this.ApiWalletInfo + "/api/report/kick"));
+        httpWebRequest.Method = "POST";
+        httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+        httpWebRequest.ContentLength = (long)bytes.Length;
+        Stream requestStream = httpWebRequest.GetRequestStream();
+        requestStream.Write(bytes, 0, bytes.Length);
+        requestStream.Close();
+        string AXC = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd();
+        string ErrorAXC = JObject.Parse(AXC)["message"].ToString();
+        if (JObject.Parse(AXC)["status"].ToString() == "9001")
+        {
+            int num = (int)MessageBox.Show(ErrorAXC);
+        }
+      }
+      catch (Exception ex)
+      {
+        int num = (int)MessageBox.Show("SERVER_SYSTEM_ERROR : 서버가 응답하지 않습니다."+Environment.NewLine+Environment.NewLine+"오류코드는 `SERVER_0x00d1` 이며,"+Environment.NewLine+"지속적인 오류 발생 시 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다.");
       }
     }
 

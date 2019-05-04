@@ -78,21 +78,21 @@ namespace coinminner
         this.wResp = (HttpWebResponse) this.wRes.GetResponse();
         this.respPostStream = this.wResp.GetResponseStream();
         this.ReadPost = new StreamReader(this.respPostStream, Encoding.Default);
-        JObject jobject = JObject.Parse(this.ReadPost.ReadToEnd());
-        if (!(jobject["message"].ToString() == "null") || !(jobject["status"].ToString() != "1"))
+        JObject GetVerCheck = JObject.Parse(this.ReadPost.ReadToEnd());
+        if (!(GetVerCheck["message"].ToString() == "null") || !(GetVerCheck["status"].ToString() != "1"))
         {
-            int num = (int)MessageBox.Show(jobject["message"].ToString());
+            int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
             Application.Exit();
         }
-        this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report/"));
+        this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report"));
         this.wSta.Method = "GET";
         this.wStap = (HttpWebResponse) this.wSta.GetResponse();
         this.resGetStr = this.wStap.GetResponseStream();
         this.ReadGet = new StreamReader(this.resGetStr, Encoding.Default);
-        JObject GetStatueAPI = JObject.Parse(this.ReadGet.ReadToEnd());
-        if (!(GetStatueAPI["message"].ToString() == "null") || !(GetStatueAPI["status"].ToString() != "1"));
+        JObject json = JObject.Parse(this.ReadGet.ReadToEnd());
+        if (!(json["message"].ToString() == "null") || !(json["status"].ToString() != "1"))
         {
-            int num = (int)MessageBox.Show(GetStatueAPI["message"].ToString());
+            int npm = (int)MessageBox.Show(json["message"].ToString());
             //Application.Exit();
         }
             

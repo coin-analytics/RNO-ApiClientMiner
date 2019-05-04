@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: coinminner.CoinMinner
-// Assembly: rnocoinminer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: C225A215-3AEB-4217-A7B2-DA79F9B782FD
-// Assembly location: C:\Program Files (x86)\RNO\RnoMiner(Beta)\rnocoinminer.exe
-
-using coinminner.Properties;
+﻿using coinminner.Properties;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -15,7 +9,6 @@ using System.Net;
 using System.Net.Security;
 using System.Text;
 using System.Windows.Forms;
-
 namespace coinminner
 {
   public class CoinMinner : Form
@@ -26,18 +19,15 @@ namespace coinminner
     private HttpWebRequest wReq;
     private HttpWebRequest wRes;
     private HttpWebRequest wSta;
-    private Stream GetDataStream;
     private Stream PostDataStream;
     private Stream PostDataStream1;
     private Stream respPostStream;
-    private Stream resPostStr;
     private Stream resGetStr;
     private StreamReader readerPost;
     private StreamReader ReadPost;
     private StreamReader ReadGet;
     private HttpWebResponse wResp;
     private HttpWebResponse wStap;
-    private HttpWebResponse wReqs;
     private IContainer components;
     private PictureBox pictureBox1;
     private TextBox WalletTextBox;
@@ -52,16 +42,14 @@ namespace coinminner
     private Label label6;
     private PictureBox pictureBox3;
     private Label label7;
-
     public CoinMinner()
-     {
-            this.InitializeComponent();
-            ServicePointManager.ServerCertificateValidationCallback += (RemoteCertificateValidationCallback)((sender, certificate, chain, sslPolicyErrors) => true);
-          
-     }
-     private void APIStat(object sender, EventArgs e)
-     {
-     }
+    {
+        this.InitializeComponent();
+        ServicePointManager.ServerCertificateValidationCallback += (RemoteCertificateValidationCallback)((sender, certificate, chain, sslPolicyErrors) => true);
+    }
+    private void APIStat(object sender, EventArgs e)
+    {
+    }
     private void Form1_Load(object sender, EventArgs e)
     {
         this.label7.Parent = (Control) this.pictureBox1;
@@ -79,25 +67,28 @@ namespace coinminner
         this.respPostStream = this.wResp.GetResponseStream();
         this.ReadPost = new StreamReader(this.respPostStream, Encoding.Default);
         JObject GetVerCheck = JObject.Parse(this.ReadPost.ReadToEnd());
-        if (!(GetVerCheck["message"].ToString() == "null") || !(GetVerCheck["status"].ToString() != "1"))
+        this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report"));
+        this.wSta.Method = "GET";
+        this.wStap = (HttpWebResponse)this.wSta.GetResponse();
+        this.resGetStr = this.wStap.GetResponseStream();
+        this.ReadGet = new StreamReader(this.resGetStr, Encoding.Default);
+        JObject json = JObject.Parse(this.ReadGet.ReadToEnd());
+        if ((GetVerCheck["message"].ToString() == null) && (json["message"].ToString() == null))
+        {
+            int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
+        }
+        if(GetVerCheck["status"].ToString() != "1")
         {
             int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
             Application.Exit();
         }
-        this.wSta = (HttpWebRequest)WebRequest.Create(new Uri(this.api + "/api/report"));
-        this.wSta.Method = "GET";
-        this.wStap = (HttpWebResponse) this.wSta.GetResponse();
-        this.resGetStr = this.wStap.GetResponseStream();
-        this.ReadGet = new StreamReader(this.resGetStr, Encoding.Default);
-        JObject json = JObject.Parse(this.ReadGet.ReadToEnd());
-        if (!(json["message"].ToString() == "null") || !(json["status"].ToString() != "1"))
+        if(json["status"].ToString() != "1")
         {
             int npm = (int)MessageBox.Show(json["message"].ToString());
             //Application.Exit();
         }
-            
     }
-        private void Form1_MouseDown(object sender, MouseEventArgs e)
+    private void Form1_MouseDown(object sender, MouseEventArgs e)
     {
         this.mousePoint = new Point(e.X, e.Y);
     }
@@ -164,7 +155,6 @@ namespace coinminner
     {
       this.mousePoint = new Point(e.X, e.Y);
     }
-
     private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
     {
       if ((e.Button & MouseButtons.Left) != MouseButtons.Left)

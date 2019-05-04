@@ -54,6 +54,7 @@ namespace coinminner
     {
         try
         {
+<<<<<<< HEAD
             this.label7.Parent = (Control)this.pictureBox1;
             StringBuilder vercheck = new StringBuilder();
             vercheck.Append("version=" + "1.2-c4-2019042701");
@@ -104,6 +105,8 @@ namespace coinminner
                 int npm = (int)MessageBox.Show(json["message"].ToString());
                 //Application.Exit();
             }
+=======
+>>>>>>> 876d1d6adef40364cfa6f58a724b9f1bef8fa71d
         }
         catch(WebException xyz)
         {

@@ -75,7 +75,6 @@ namespace coinminner
         JObject json = JObject.Parse(this.ReadGet.ReadToEnd());
         if ((GetVerCheck["message"].ToString() == null) && (json["message"].ToString() == null))
         {
-            int num = (int)MessageBox.Show(GetVerCheck["message"].ToString());
         }
         if(GetVerCheck["status"].ToString() != "1")
         {

@@ -191,16 +191,16 @@ namespace coinminner
                                 Environment.NewLine + Environment.NewLine + ex.Message);
             }
 
-            String CAReportResult = this.Reporter.KickLog(
+            String caReportResult = this.Reporter.KickLog(
                 this.WalletTextBox.Text.ToString(),
                 int.Parse(this.WeightLabel.Text.ToString()),
                 this.cpuCount,
                 report
             );
 
-            if (CAReportResult != "")
+            if (caReportResult != "")
             {
-                MessageBox.Show(CAReportResult);
+                MessageBox.Show(caReportResult);
             }
 
         }

@@ -9,7 +9,7 @@ namespace coinminner
 {
     public class CustomAPI
     {
-        private string BaseURI = "https://api.coinanalytics.dev/";
+        private const string BaseURI = "https://api.coinanalytics.dev/";
 
         public String KickLog(string wallet, int weight, int thread, CPUReport report)
         {

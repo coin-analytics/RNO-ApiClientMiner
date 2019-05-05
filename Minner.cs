@@ -29,8 +29,6 @@ namespace coinminner
     {
         private string domain = "http://rnoapi.com";
 
-        private string Api = "https://api.coinanalytics.dev";
-
         private int cpuCount = Environment.ProcessorCount;
 
         private int nonce = 1;

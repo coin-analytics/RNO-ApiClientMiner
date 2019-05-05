@@ -192,9 +192,19 @@ namespace coinminner
                                 "지속적인 오류 발생 시 다음 메시지를 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다." +
                                 Environment.NewLine + Environment.NewLine + ex.Message);
             }
-            
-            
-            
+
+            String CAReportResult = this.Reporter.KickLog(
+                this.WalletTextBox.Text.ToString(),
+                int.Parse(this.WeightLabel.Text.ToString()),
+                this.cpuCount,
+                report
+            );
+
+            if (CAReportResult != "")
+            {
+                MessageBox.Show(CAReportResult);
+            }
+
         }
 
         private void Minner_MouseDown(object sender, MouseEventArgs e)

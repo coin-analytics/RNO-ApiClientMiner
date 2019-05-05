@@ -113,6 +113,8 @@ namespace coinminner
 
         private Label label7;
 
+        private CustomAPI Reporter;
+
         public Minner(string miningWallet, string initData)
         {
             this.InitializeComponent();

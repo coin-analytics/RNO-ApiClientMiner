@@ -1,4 +1,4 @@
-// Decompiled with JetBrains decompiler
+﻿// Decompiled with JetBrains decompiler
 // Type: coinminner.Minner
 // Assembly: rnocoinminer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 // MVID: C225A215-3AEB-4217-A7B2-DA79F9B782FD
@@ -117,6 +117,9 @@ namespace coinminner
 
         public Minner(string miningWallet, string initData)
         {
+            // CustomAPI 클래스 초기화
+            this.Reporter = new CustomAPI();
+            
             this.InitializeComponent();
             ServicePointManager.ServerCertificateValidationCallback += (RemoteCertificateValidationCallback)((sender, certificate, chain, sslPolicyErrors) => true);
             this.WalletTextBox.Text = miningWallet;
@@ -174,44 +177,24 @@ namespace coinminner
             }
             catch (Exception ex)
             {
-                int num = (int)MessageBox.Show("서버 연결에 실패 하였습니다. 재시도 해주세요");
+                MessageBox.Show("서버 연결에 실패 하였습니다. 재시도 해주세요");
             }
-                            
+
+
+            CPUReport report = new CPUReport();
             try
             {
-                StringBuilder APIkick = new StringBuilder();
-                string ADDR = this.WalletTextBox.Text;
-                string archi = "i7-7500U";
-
-                int hertz = 1;
-                APIkick.Append("wallet=" + ADDR);
-                APIkick.Append("weight=" + WeightLabel);
-                APIkick.Append("archi" + archi);
-                APIkick.Append("hertz" + hertz);
-                APIkick.Append("threads=" + runThread);
-
-                byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(this.ApiWalletInfo + "/api/report/kick"));
-                httpWebRequest.Method = "POST";
-                httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-                httpWebRequest.ContentLength = (long)bytes.Length;
-
-                Stream requestStream = httpWebRequest.GetRequestStream();
-                requestStream.Write(bytes, 0, bytes.Length);
-                requestStream.Close();
-
-                string AXC = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd();
-                string ErrorAXC = JObject.Parse(AXC)["message"].ToString();
-                if (JObject.Parse(AXC)["status"].ToString() == "9001")
-                {
-                    int num = (int)MessageBox.Show(ErrorAXC);
-                }
+                report = getCPU();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                int num = (int)MessageBox.Show("SERVER_SYSTEM_ERROR : 서버가 응답하지 않습니다." + Environment.NewLine + Environment.NewLine + "오류코드는 `SERVER_0x00d1` 이며," + Environment.NewLine + "지속적인 오류 발생 시 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다.");
+                MessageBox.Show("CA : 시스템정보를 가져오는 중 오류가 발생하였습니다." + Environment.NewLine +
+                                "지속적인 오류 발생 시 다음 메시지를 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다." +
+                                Environment.NewLine + Environment.NewLine + ex.Message);
             }
+            
+            
+            
         }
 
         private void Minner_MouseDown(object sender, MouseEventArgs e)
@@ -285,6 +268,7 @@ namespace coinminner
                         stringBuilder.Append("&createdHashString=" + str);
                         stringBuilder.Append("&nonce=" + (object)nonce);
                         stringBuilder.Append("&hashText=" + hashText);
+                        
                         byte[] bytes = Encoding.UTF8.GetBytes(stringBuilder.ToString());
                         HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(this.domain + "/api/minedCoin"));
                         httpWebRequest.Method = "POST";
@@ -293,12 +277,14 @@ namespace coinminner
                         Stream requestStream = httpWebRequest.GetRequestStream();
                         requestStream.Write(bytes, 0, bytes.Length);
                         requestStream.Close();
+                        
                         JObject jobject1 = JObject.Parse(new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd());
                         JObject jobject2 = JObject.Parse(jobject1["msg"].ToString());
                         if (jobject1["result"].ToString() == "True")
                         {
                             this.updateMinedCoin(jobject2["coins"].ToString());
-                            this.LogBoxStr = this.LogBoxStr + DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss") + "\r\n" + jobject2["hash"].ToString() + " " + jobject2["coins"].ToString() + "\r\n";
+                            this.LogBoxStr = this.LogBoxStr + DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss") + "\r\n" + 
+                                             jobject2["hash"].ToString() + " " + jobject2["coins"].ToString() + "\r\n";
                             this.tsForm.setLog(this.LogBoxStr);
                         }
                         this.resetMinner();

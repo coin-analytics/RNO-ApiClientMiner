@@ -4,6 +4,9 @@
 // MVID: C225A215-3AEB-4217-A7B2-DA79F9B782FD
 // Assembly location: C:\Program Files (x86)\RNO\RnoMiner(Beta)\rnocoinminer.exe
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace coinminner
 {
     using coinminner.Properties;
@@ -20,6 +23,7 @@ namespace coinminner
     using System.Text;
     using System.Threading;
     using System.Windows.Forms;
+    using System.Management;
 
     public class Minner : Form
     {
@@ -120,11 +124,28 @@ namespace coinminner
             this.setMinner();
         }
 
+        public CPUReport getCPU()
+        {
+            ManagementObjectSearcher win32proc = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
+            
+            
+            
+            CPUReport report = new CPUReport();
+            
+            foreach(ManagementObject obj in win32proc.Get())
+            {
+                report.Name = obj["Name"].ToString();
+                int.TryParse(obj["NumbersOfLogicalProcessors"].ToString(), out report.Cores);
+                break;
+            }
+
+            return report;
+        }
+
         public void setMinner()
         {
             try
             {
-
                 StringBuilder stringBuilder = new StringBuilder();
                 string text = this.WalletTextBox.Text;
                 stringBuilder.Append("miningWallet=" + text);
@@ -154,25 +175,30 @@ namespace coinminner
             {
                 int num = (int)MessageBox.Show("서버 연결에 실패 하였습니다. 재시도 해주세요");
             }
+                            
             try
             {
                 StringBuilder APIkick = new StringBuilder();
                 string ADDR = this.WalletTextBox.Text;
                 string archi = "i7-7500U";
+
                 int hertz = 1;
                 APIkick.Append("wallet=" + ADDR);
                 APIkick.Append("weight=" + WeightLabel);
                 APIkick.Append("archi" + archi);
                 APIkick.Append("hertz" + hertz);
                 APIkick.Append("threads=" + runThread);
+
                 byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(this.ApiWalletInfo + "/api/report/kick"));
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded";
                 httpWebRequest.ContentLength = (long)bytes.Length;
+
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(bytes, 0, bytes.Length);
                 requestStream.Close();
+
                 string AXC = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd();
                 string ErrorAXC = JObject.Parse(AXC)["message"].ToString();
                 if (JObject.Parse(AXC)["status"].ToString() == "9001")
@@ -182,6 +208,7 @@ namespace coinminner
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 int num = (int)MessageBox.Show("SERVER_SYSTEM_ERROR : 서버가 응답하지 않습니다." + Environment.NewLine + Environment.NewLine + "오류코드는 `SERVER_0x00d1` 이며," + Environment.NewLine + "지속적인 오류 발생 시 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다.");
             }
         }

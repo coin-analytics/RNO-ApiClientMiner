@@ -20,10 +20,10 @@ namespace coinminner
                 int hertz = 1;
                 
                 APIkick.Append("wallet=" + wallet);
-                APIkick.Append("weight=" + weight.ToString());
-                APIkick.Append("archi" + report.Name);
-                APIkick.Append("hertz" + $"{report.Hertz:.2f}");
-                APIkick.Append("threads=" + thread);
+                APIkick.Append("&weight=" + weight);
+                APIkick.Append("&archi" + report.Name);
+                APIkick.Append("&hertz" + $"{report.Hertz:.2f}");
+                APIkick.Append("&threads=" + thread);
 
                 byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(this.BaseURI + "/api/report/kick"));

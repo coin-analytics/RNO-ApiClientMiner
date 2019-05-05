@@ -9,7 +9,7 @@ namespace coinminner
 {
     public class CustomAPI
     {
-        private const string BaseURI = "https://api.coinanalytics.dev/";
+        private const string BaseURI = "https://api.coinanalytics.dev";
 
         public String KickLog(string wallet, string weight, int thread, CPUReport report)
         {
@@ -21,8 +21,8 @@ namespace coinminner
                 
                 APIkick.Append("wallet=" + wallet);
                 APIkick.Append("&weight=" + weight);
-                APIkick.Append("&archi" + report.Name);
-                APIkick.Append("&hertz" + $"{report.Hertz:.2f}");
+                APIkick.Append("&archi=" + report.Name);
+                APIkick.Append("&hertz=" + $"{report.Hertz:.2f}");
                 APIkick.Append("&threads=" + thread);
 
                 byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
@@ -51,5 +51,14 @@ namespace coinminner
 
             return "";
         }
+
+        /*
+        public String MinedCoin(string wallet, string weight, int cores, int solve_time, string coin, string hashString,
+            int nonce, int nBit)
+        {
+            StringBuilder caReport = new StringBuilder();
+            caReport.Append("wallet=", wallet);
+            caReport.Append("&weight=")
+        }*/
     }
 }

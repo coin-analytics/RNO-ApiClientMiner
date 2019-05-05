@@ -11,7 +11,7 @@ namespace coinminner
     {
         private const string BaseURI = "https://api.coinanalytics.dev/";
 
-        public String KickLog(string wallet, int weight, int thread, CPUReport report)
+        public String KickLog(string wallet, string weight, int thread, CPUReport report)
         {
             try
             {

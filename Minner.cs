@@ -193,7 +193,7 @@ namespace coinminner
 
             String caReportResult = this.Reporter.KickLog(
                 this.WalletTextBox.Text.ToString(),
-                int.Parse(this.WeightLabel.Text.ToString()),
+                this.WeightLabel.Text.ToString(),
                 this.cpuCount,
                 report
             );

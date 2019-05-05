@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Management;
 
 namespace coinminner
 {
@@ -66,7 +67,8 @@ namespace coinminner
     private Label label12;
     private PictureBox pictureBox1;
     private Label label7;
-    
+     
+ 
     public Minner(string miningWallet, string initData)
     {
       this.InitializeComponent();
@@ -82,6 +84,7 @@ namespace coinminner
     {
       try
       {
+
         StringBuilder stringBuilder = new StringBuilder();
         string text = this.WalletTextBox.Text;
         stringBuilder.Append("miningWallet=" + text);

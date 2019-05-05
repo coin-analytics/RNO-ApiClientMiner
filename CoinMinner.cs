@@ -54,7 +54,6 @@ namespace coinminner
     {
         try
         {
-<<<<<<< HEAD
             this.label7.Parent = (Control)this.pictureBox1;
             StringBuilder vercheck = new StringBuilder();
             vercheck.Append("version=" + "1.2-c4-2019042701");
@@ -105,12 +104,11 @@ namespace coinminner
                 int npm = (int)MessageBox.Show(json["message"].ToString());
                 //Application.Exit();
             }
-=======
->>>>>>> 876d1d6adef40364cfa6f58a724b9f1bef8fa71d
+
         }
         catch(WebException xyz)
         {
-            int num = (int)MessageBox.Show("SERVER_SYSTEM_ERROR : API서버가 DOWN되었습니다."+Environment.NewLine+Environment.NewLine+"오류코드는 `SERVER_DOWN` 이며,"+Environment.NewLine+"즉시 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다.");
+            int num = (int)MessageBox.Show("SERVER_SYSTEM_ERROR :서버 연결에 실패 하였습니다." + Environment.NewLine+Environment.NewLine+"오류코드는 `SERVER_connect_0x1` 이며,"+Environment.NewLine+"즉시 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다.");
         }
     }
     private void Form1_MouseDown(object sender, MouseEventArgs e)

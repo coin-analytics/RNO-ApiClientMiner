@@ -26,7 +26,7 @@ namespace coinminner
                 APIkick.Append("&threads=" + thread);
 
                 byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(this.BaseURI + "/api/report/kick"));
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(CustomAPI.BaseURI + "/api/report/kick"));
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded";
                 httpWebRequest.ContentLength = (long)bytes.Length;

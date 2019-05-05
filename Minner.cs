@@ -1,4 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
+// Decompiled with JetBrains decompiler
 // Type: coinminner.Minner
 // Assembly: rnocoinminer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 // MVID: C225A215-3AEB-4217-A7B2-DA79F9B782FD
@@ -124,18 +124,17 @@ namespace coinminner
             this.setMinner();
         }
 
+        // CPU정보 가져오는 함수
         public CPUReport getCPU()
         {
             ManagementObjectSearcher win32proc = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
-            
-            
-            
             CPUReport report = new CPUReport();
             
             foreach(ManagementObject obj in win32proc.Get())
             {
                 report.Name = obj["Name"].ToString();
                 int.TryParse(obj["NumbersOfLogicalProcessors"].ToString(), out report.Cores);
+                int.TryParse(obj["MaxClockSpeed"].ToString(), out report.Hertz);
                 break;
             }
 

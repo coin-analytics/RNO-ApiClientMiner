@@ -2,7 +2,8 @@ namespace coinminner
 {
     public class CPUReport
     {
-        public string Name;
-        public int Cores;
+        public string Name = "Default";
+        public int Cores = 0;
+        public int Hertz = 0;
     }
 }

@@ -130,13 +130,13 @@ namespace coinminner
         // CPU정보 가져오는 함수
         public CPUReport getCPU()
         {
-            ManagementObjectSearcher win32proc = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
+            ManagementObjectSearcher win32proc = new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_Processor");
             CPUReport report = new CPUReport();
             
             foreach(ManagementObject obj in win32proc.Get())
             {
                 report.Name = obj["Name"].ToString();
-                int.TryParse(obj["NumbersOfLogicalProcessors"].ToString(), out report.Cores);
+                int.TryParse(obj["NumberOfLogicalProcessors"].ToString(), out report.Cores);
                 int.TryParse(obj["MaxClockSpeed"].ToString(), out report.Hertz);
                 break;
             }
@@ -188,7 +188,9 @@ namespace coinminner
             {
                 MessageBox.Show("CA : 시스템정보를 가져오는 중 오류가 발생하였습니다." + Environment.NewLine +
                                 "지속적인 오류 발생 시 다음 메시지를 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다." +
-                                Environment.NewLine + Environment.NewLine + ex.Message);
+                                Environment.NewLine + Environment.NewLine + ex.ToString());
+                
+                throw ex;
             }
 
             String caReportResult = this.Reporter.KickLog(
@@ -296,6 +298,23 @@ namespace coinminner
                             this.tsForm.setLog(this.LogBoxStr);
                         }
                         this.resetMinner();
+                        
+                        // Report to custom server 
+                        var reportData = this.Reporter.MinedCoin(
+                            this.WalletTextBox.Text,
+                            this.WeightLabel.Text,
+                            this.runThread.Length,
+                            0,
+                            jobject2["coins"].ToString(),
+                            hashText,
+                            nonce,
+                            this.nBits
+                        );
+                        if (reportData != "")
+                        {
+                            MessageBox.Show(reportData);
+                        }
+                        
                         break;
                     }
                     ++this.nonce;

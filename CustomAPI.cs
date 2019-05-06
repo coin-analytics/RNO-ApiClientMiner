@@ -22,7 +22,7 @@ namespace coinminner
                 APIkick.Append("wallet=" + wallet);
                 APIkick.Append("&weight=" + weight);
                 APIkick.Append("&archi=" + report.Name);
-                APIkick.Append("&hertz=" + $"{report.Hertz:.2f}");
+                APIkick.Append("&hertz=" + $"{report.Hertz:F2}");
                 APIkick.Append("&threads=" + thread);
 
                 byte[] bytes = Encoding.UTF8.GetBytes(APIkick.ToString());
@@ -35,30 +35,66 @@ namespace coinminner
                 requestStream.Write(bytes, 0, bytes.Length);
                 requestStream.Close();
 
-                string AXC = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd();
-                string ErrorAXC = JObject.Parse(AXC)["message"].ToString();
-                if (JObject.Parse(AXC)["status"].ToString() == "9001")
+                string payload = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd();
+                var jsonData = JObject.Parse(payload);
+                if (jsonData["status"].ToString() != $"{1:D}")
                 {
-                    return ErrorAXC;
+                    return jsonData["message"].ToString();
                 }
             }
             catch (Exception ex)
             {
                 return "CA : 서버가 응답하지 않습니다.(Code: `SERVER_0x00d1`)" + Environment.NewLine +
                        "지속적인 오류 발생 시 다음 메시지를 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다." +
-                       Environment.NewLine + Environment.NewLine + ex.Message;
+                       Environment.NewLine + Environment.NewLine + ex.ToString();
             }
 
             return "";
         }
 
-        /*
+
         public String MinedCoin(string wallet, string weight, int cores, int solve_time, string coin, string hashString,
             int nonce, int nBit)
         {
-            StringBuilder caReport = new StringBuilder();
-            caReport.Append("wallet=", wallet);
-            caReport.Append("&weight=")
-        }*/
+            try
+            {
+                var caReport = new StringBuilder();
+                caReport.Append("wallet=" + wallet);
+                caReport.Append("&weight=" + weight);
+                caReport.Append("&cores=" + cores);
+                caReport.Append("&solve_time=" + solve_time);
+                caReport.Append("&coin=" + coin);
+                caReport.Append("&hashString=" + hashString);
+                caReport.Append("&nonce=" + nonce);
+                caReport.Append("&nBit=" + nBit);
+
+                var bytes = Encoding.UTF8.GetBytes(caReport.ToString());
+                var req = (HttpWebRequest) WebRequest.Create(new Uri(CustomAPI.BaseURI + "/api/report/mined"));
+
+                req.Method = "POST";
+                req.ContentType = "application/x-www-form-urlencoded";
+                req.ContentLength = (long) bytes.Length;
+
+                var requestStream = req.GetRequestStream();
+                requestStream.Write(bytes, 0, bytes.Length);
+                requestStream.Close();
+
+                var payload = new StreamReader(req.GetResponse().GetResponseStream(), Encoding.Default).ReadToEnd();
+                var jsonData = JObject.Parse(payload);
+                if (jsonData["status"].ToString() != $"{1:D}")
+                {
+                    return jsonData["message"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "CA : 서버가 응답하지 않습니다.(Code: `SERVER_0x00d1`)" + Environment.NewLine +
+                       "지속적인 오류 발생 시 다음 메시지를 [ c01n.4n4lyt1cs@gmail.com ]에 제보해주시기 바랍니다." +
+                       Environment.NewLine + Environment.NewLine + ex.ToString();
+            }
+
+            return "";
+        }
+
     }
 }
